@@ -141,6 +141,9 @@ function test(event) {
     } else {
       saveWrongGuess(key,usedLetters);
       remainingLife = life -  usedLetters.length;
+      if (remainingLife == 0) {
+        initGame();
+      }
     }
 
     // if ( ! checkMatch(wordToGuess, key, blankWord) ) {
