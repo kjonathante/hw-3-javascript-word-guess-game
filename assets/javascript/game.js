@@ -1,17 +1,68 @@
-
 /*
+purpose: create an array of wildcard character representing each letter of the word
 params
-  word = word to guess
-  wildChar = character representing the word to guess
-returns 
-  an array of wildChar with the same length as the word to guess
+  word - word to guess
+  wildChar - character to use as the wildcard character
+returns: an array of wildcard character with the same length as the word to guess
 */
 function createPlaceholder( word, wildChar ) {
-  var blankWord = [];
-  for (i=0; i < word.length; i++) {
+  const blankWord = [];
+  for (let i=0; i < word.length; i++) {
     blankWord.push(wildChar);
   }
   return blankWord;
+}
+
+/*
+purpose: check if there is a match between the word and user input
+returns: a boolean, true if there was a match
+*/
+function isMatch( word, userInput ) {
+  let match = false;
+  if ( word.indexOf(userInput) > -1 ) {
+    match = true;
+  }
+  return match;
+}
+
+/*
+purpose: store the letter that was correctly guessed
+params
+  word - word to guess
+  userInput - letter that the user guessed
+  coorectGuess - an array holding the wildcard and letters already guessed (pass by reference)
+*/
+function saveCorrectGuess(word, userInput, correctGuess) {
+  if ( correctGuess.indexOf( userInput ) == -1) { // make sure it is not guessed yet
+    for (let i=0; i < word.length; i++) {
+      if (word[i] === userInput) {
+        correctGuess[i] = userInput;
+      }
+    }
+  }
+}
+
+/*
+purpose: store the letter that was wrongly guessed
+params
+  userInput - letter that the user guessed
+  wrongGuess - an array of letters that was wrongly guessed (pass by reference)
+*/
+function saveWrongGuess( userInput, wrongGuess ) {
+  if (wrongGuess.indexOf(userInput) == -1 ) { // make sure it is unique
+    wrongGuess.push(userInput); 
+  }
+}
+
+/*
+purpose: check if all letters of the word was correctly guessed
+params
+  correctGuess - an array holding the wildchar and letters already guessed
+  wildChar - a char that represents that letters that the user haven't guess
+returns: a boolean, true if the word was guessed correctly
+*/
+function isGuessRight (correctGuess, wildChar) {
+  return (correctGuess.indexOf(wildChar) == -1);
 }
 
 /*
@@ -39,31 +90,6 @@ function checkMatch( word, userInput, placeHolder) {
   return match;
 }
 
-/*
-purpose
-  store the wrong letter that was guessed uniquely
-params
-  usedLetters - an array of wrong letters that was guessed (pass by reference)
-  userInput - a char that the user guessed
-*/
-function logWrongGuess( usedLetters, userInput ) {
-  if (usedLetters.indexOf(userInput) == -1 ) {
-    usedLetters.push(userInput); 
-  }
-}
-
-/*
-purpose: check if there is still wildChar left in the placeholder
-params
-  placeHolder - an array of the word that the user is trying to guess
-  wildChar - a char that represents that letters that the user haven't guess
-return: true if the word was guessed correctly
-*/
-function isGuessRight (placeHolder, wildChar) {
-  return (placeHolder.indexOf(wildChar) == -1);
-}
-
-
 
 
 
@@ -75,22 +101,29 @@ function dispPlaceHolder( placeHolder ) {
   return str;
 }
 
+function initGame() {
+  wordToGuess = "tommorow";
+  blankWord = createPlaceholder("tomorrow", "#");
+  usedLetters = [];
+  remainingLife = life = 12;
+}
 
+function updateDocument() {
+  document.querySelector('#win').innerHTML=win;
+  document.querySelector('#placeholder').innerHTML=dispPlaceHolder(blankWord);
+  document.querySelector('#remaininglife').innerHTML=remainingLife;
+  document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);  
+}
 
-var wordToGuess = "tommorow";
-var blankWord = [];
-var usedLetters = [];
-var blankWord = createPlaceholder("tomorrow", "#");
 var win=0;
-var life=12;
-var remaininglife=0;
+var wordToGuess;
+var blankWord;
+var usedLetters;
+var life;
+var remainingLife;
 
-
-remaininglife = life;
-document.querySelector('#win').innerHTML=win;
-document.querySelector('#placeholder').innerHTML=dispPlaceHolder(blankWord);
-document.querySelector('#remaininglife').innerHTML=remaininglife;
-document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);
+initGame();
+updateDocument();
 
 function test(event) {
   const key = event.key.toLowerCase();
@@ -102,18 +135,27 @@ function test(event) {
   const isLetter = (key >= "a" && key <= "z");
   const isNumber = (key >= "0" && key <= "9");
   if (isLetter || isNumber) {
-    if ( ! checkMatch(wordToGuess, key, blankWord) ) {
-      logWrongGuess( usedLetters, key);
-      remainglife = life -  usedLetters.length;
+
+    if ( isMatch(wordToGuess, key) ) {
+      saveCorrectGuess(wordToGuess, key, blankWord);
     } else {
-      if (isGuessRight(blankWord, "#")) {
-        win++;
-      }
+      saveWrongGuess(key,usedLetters);
+      remainingLife = life -  usedLetters.length;
     }
-    document.querySelector('#win').innerHTML=win;
-    document.querySelector('#placeholder').innerHTML=dispPlaceHolder(blankWord);
-    document.querySelector('#remaininglife').innerHTML=remainglife;
-    document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);
+
+    // if ( ! checkMatch(wordToGuess, key, blankWord) ) {
+    //   logWrongGuess( usedLetters, key);
+    //   remainglife = life -  usedLetters.length;
+    // } else {
+    //   if (isGuessRight(blankWord, "#")) {
+    //     win++;
+    //   }
+    // }
+    if (isGuessRight(blankWord, "#")) {
+      win++;
+      initGame();
+    }
+    updateDocument();
   }
 
   console.log(key);
