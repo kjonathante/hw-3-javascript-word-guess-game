@@ -31,15 +31,19 @@ params
   word - word to guess
   userInput - letter that the user guessed
   coorectGuess - an array holding the wildcard and letters already guessed (pass by reference)
+returns: a number indicating the number of times the letter was push into the correctGuess array
 */
 function saveCorrectGuess(word, userInput, correctGuess) {
+  let save = 0;
   if ( correctGuess.indexOf( userInput ) == -1) { // make sure it is not guessed yet
     for (let i=0; i < word.length; i++) {
       if (word[i] === userInput) {
         correctGuess[i] = userInput;
+        save++;
       }
     }
   }
+  return save;
 }
 
 /*
@@ -47,11 +51,15 @@ purpose: store the letter that was wrongly guessed
 params
   userInput - letter that the user guessed
   wrongGuess - an array of letters that was wrongly guessed (pass by reference)
+returns: a boolean indicating if the letter was added to the array
 */
 function saveWrongGuess( userInput, wrongGuess ) {
+  let save = false;
   if (wrongGuess.indexOf(userInput) == -1 ) { // make sure it is unique
     wrongGuess.push(userInput); 
+    save = true;
   }
+  return save;
 }
 
 /*
@@ -101,9 +109,12 @@ function dispPlaceHolder( placeHolder ) {
   return str;
 }
 
+/*
+purpose: initialize global variables use in the the game
+*/
 function initGame() {
   wordToGuess = "tommorow";
-  blankWord = createPlaceholder("tomorrow", "#");
+  blankWord = createPlaceholder("tomorrow", wildcard);
   usedLetters = [];
   remainingLife = life = 12;
 }
@@ -115,7 +126,10 @@ function updateDocument() {
   document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);  
 }
 
+const correctSound = document.getElementById('correct');
+const wrongSound = document.getElementById('wrong');
 var win=0;
+const wildcard = "#";
 var wordToGuess;
 var blankWord;
 var usedLetters;
@@ -137,9 +151,15 @@ function test(event) {
   if (isLetter || isNumber) {
 
     if ( isMatch(wordToGuess, key) ) {
-      saveCorrectGuess(wordToGuess, key, blankWord);
+      if ( saveCorrectGuess(wordToGuess, key, blankWord) > 0 ) {
+        correctSound.currentTime = .5;
+        correctSound.play();
+      }
     } else {
-      saveWrongGuess(key,usedLetters);
+      if (saveWrongGuess(key,usedLetters)) {
+        wrongSound.currentTime = .5;
+        wrongSound.play();
+      }
       remainingLife = life -  usedLetters.length;
       if (remainingLife == 0) {
         initGame();
@@ -154,7 +174,7 @@ function test(event) {
     //     win++;
     //   }
     // }
-    if (isGuessRight(blankWord, "#")) {
+    if (isGuessRight(blankWord, wildcard)) {
       win++;
       initGame();
     }
