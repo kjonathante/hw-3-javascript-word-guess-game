@@ -32,6 +32,8 @@ function checkMatch( word, userInput, placeHolder) {
         match=true;
       }
     }
+  } else {
+    match = true;
   }
 
   return match;
@@ -61,27 +63,80 @@ function isGuessRight (placeHolder, wildChar) {
   return (placeHolder.indexOf(wildChar) == -1);
 }
 
+
+
+
+
+function dispPlaceHolder( placeHolder ) {
+  let str = "";
+  for (let i=0; i < placeHolder.length; i++) {
+    str += `<span>${placeHolder[i]}</span>`;
+  }
+  return str;
+}
+
+
+
 var wordToGuess = "tommorow";
 var blankWord = [];
 var usedLetters = [];
 var blankWord = createPlaceholder("tomorrow", "#");
+var win=0;
+var life=12;
+var remaininglife=0;
 
-var guesses = "taoimeruw"
 
-for (y=0; y < guesses.length; y++) {
-  var inputLetter = guesses[y];
-  var gotIt=false;
+remaininglife = life;
+document.querySelector('#win').innerHTML=win;
+document.querySelector('#placeholder').innerHTML=dispPlaceHolder(blankWord);
+document.querySelector('#remaininglife').innerHTML=remaininglife;
+document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);
 
-  if ( ! checkMatch("tomorrow", inputLetter, blankWord) ) {
-    logWrongGuess( usedLetters, inputLetter);
+function test(event) {
+  const key = event.key.toLowerCase();
+
+  if (key.length !== 1) {
+      return;
   }
-  
-  gotIt = isGuessRight(blankWord, "#");
 
-  console.log( y + " of " + guesses.length)
-  console.log(wordToGuess); 
-  console.log(blankWord.join());
-  console.log(usedLetters.join());
-  console.log(gotIt);
+  const isLetter = (key >= "a" && key <= "z");
+  const isNumber = (key >= "0" && key <= "9");
+  if (isLetter || isNumber) {
+    if ( ! checkMatch(wordToGuess, key, blankWord) ) {
+      logWrongGuess( usedLetters, key);
+      remainglife = life -  usedLetters.length;
+    } else {
+      if (isGuessRight(blankWord, "#")) {
+        win++;
+      }
+    }
+    document.querySelector('#win').innerHTML=win;
+    document.querySelector('#placeholder').innerHTML=dispPlaceHolder(blankWord);
+    document.querySelector('#remaininglife').innerHTML=remainglife;
+    document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);
+  }
+
+  console.log(key);
 }
+
+document.onkeyup = test;
+
+
+// var guesses = "taoimeruw";
+// for (y=0; y < guesses.length; y++) {
+//   var inputLetter = guesses[y];
+//   var gotIt=false;
+
+//   if ( ! checkMatch("tomorrow", inputLetter, blankWord) ) {
+//     logWrongGuess( usedLetters, inputLetter);
+//   }
+
+//   gotIt = isGuessRight(blankWord, "#");
+
+//   console.log( y + " of " + guesses.length)
+//   console.log(wordToGuess); 
+//   console.log(blankWord.join());
+//   console.log(gotIt);
+//   setTimeout
+// }
 
