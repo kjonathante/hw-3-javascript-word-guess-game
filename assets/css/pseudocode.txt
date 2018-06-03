@@ -1,3 +1,20 @@
+
+loop through the word 
+
+1. Create a variable wordToGuess to hold the word to guess.
+
+2. create blank string with lenght of the word to guess
+
+loop through wordToGuess
+  if there is a match
+    push it to the array 
+
+  if there is no match 
+    save the letter to UsedLetters
+
+  check if there is no more *
+    win
+
 var wordToGuess = "tommorow";
 var blankWord = [];
 var usedLetters = [];
