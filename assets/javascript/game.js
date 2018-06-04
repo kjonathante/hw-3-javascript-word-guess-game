@@ -120,9 +120,9 @@ function initGame() {
 }
 
 function updateDocument() {
-  document.querySelector('#win').innerHTML=win;
-  document.querySelector('#placeholder').innerHTML=dispPlaceHolder(blankWord);
-  document.querySelector('#remaininglife').innerHTML=remainingLife;
+  document.querySelector('#score').innerHTML=win;
+  document.querySelector('#secret-word').innerHTML=dispPlaceHolder(blankWord);
+  document.querySelector('#life').innerHTML=remainingLife;
   document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);  
 }
 
@@ -136,8 +136,8 @@ var usedLetters;
 var life;
 var remainingLife;
 
-initGame();
-updateDocument();
+//initGame();
+//updateDocument();
 
 function test(event) {
   const key = event.key.toLowerCase();
@@ -161,8 +161,10 @@ function test(event) {
         wrongSound.play();
       }
       remainingLife = life -  usedLetters.length;
-      if (remainingLife == 0) {
-        initGame();
+      if (remainingLife == 0) { // end of game
+        document.onkeyup = null;
+        document.getElementById("end").style.display="block";
+        // initGame();
       }
     }
 
@@ -184,8 +186,17 @@ function test(event) {
   console.log(key);
 }
 
-document.onkeyup = test;
-
+// document.onkeyup = test;
+document.getElementById("start-button").onclick = (() => {
+  document.onkeyup = test;
+  initGame();
+  updateDocument();
+});
+document.getElementById("end-button").onclick = (() => {
+  document.onkeyup = test;
+  initGame();
+  updateDocument();
+});
 
 // var guesses = "taoimeruw";
 // for (y=0; y < guesses.length; y++) {

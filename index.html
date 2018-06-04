@@ -12,17 +12,37 @@
   <audio id="correct" src="assets/mp3/jg-032316-sfx-feedback-correct-12.mp3"  autostart="false"></audio>
   <audio id="wrong"   src="assets/mp3/jg-032316-sfx-elearning-incorrect-answer-sound-4.mp3" autostart="false"></audio>
 
-  <h2>Wins</h2>
-  <div id="win"></div>
 
-  <h2>Guess The Word</h2>
-  <div id="placeholder"></div>
+  <div class="container">
 
-  <h2>Remaining life</h2>
-  <div id="remaininglife"></div>
+    <!-- <h2>Guess The Word</h2> -->
+    <div id="secret-word"></div>
+  
+    <div id="end">You are out of life.
+      <button id="end-button">Continue</button>
+    </div>
 
-  <h2>Wrong Letters</h2>
-  <div id="wrongletters"></div>
+    <div id="start">
+      Welcome to Hangman
+      <button id="start-button">Start</button>
+    </div>
+
+    <div>
+      <div id="score-box">
+        <h2 id="score-text">SCORE</h2><!--
+        --><div id="score">100</div>
+      </div>
+    </div>
+    <div>
+      <div id="life-box">
+        <h2 id="life-text">LIFE</h2><!--
+        --><div id="life"></div>    
+      </div>
+    </div>
+   
+    <!-- <h2>Wrong Letters</h2> -->
+    <div id="wrongletters"></div>
+  </div>
   
   <script src="assets/javascript/game.js"></script>
 </body>
