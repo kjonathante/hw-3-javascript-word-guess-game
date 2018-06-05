@@ -59,22 +59,20 @@ function hangman(event) {
         wrongSoundDom.currentTime = .5;
         wrongSoundDom.play();
       }
-      remainingLife = life -  usedLetters.length;
+      remainingLife = life - usedLetters.length;
     }
 
     if (isGuessRight(blankWord, wildcard)) {
       win++;
       document.onkeyup = null;
-      showMainModal("You got it", "Continue");
-      //document.getElementById("main-modal").style.display = "block";
+      showMainModal("You got it.", "Continue");
     }
 
     updateDocument();
     
     if (remainingLife == 0) { // end of game
       document.onkeyup = null;
-      showMainModal("Sorry ... try again", "Continue");
-      // document.getElementById("main-modal").style.display = "block";
+      showMainModal("Sorry. Try again.", "Continue");
     }
   }
 
