@@ -1,3 +1,97 @@
+const life=12; /* number of guess each round */
+const wildcard = "#"; /* wildcard char use */
+
+let win=0;
+let wordToGuess; /* a string, the secret word */
+let blankWord; /* an array of wildcard char for the secret word and the correct guessed letters*/
+let usedLetters; /* an array of wrong guessed letters*/
+let remainingLife; /* number of guess remaining */
+
+/* DOM Elements */
+const correctSoundDom = document.getElementById('correct');
+const wrongSoundDom = document.getElementById('wrong');
+let secretWordDom = document.getElementById("secret-word");
+let wrongLettersDom = document.getElementById("wrongletters");
+let scoreDom = document.getElementById("score");
+let lifeDom = document.getElementById("life");
+let modalMsgDom = document.getElementById("modal-text");
+let modalBtnDom = document.getElementById("modal-button");
+let mainModalDom = document.getElementById("main-modal");
+
+
+secretWordDom.innerHTML = createPanel("hangman".split(""));
+scoreDom.innerText = win;
+lifeDom.innerText = life;
+showMainModal( "Welcome to Hangman", "Start");
+
+modalBtnDom.onclick = (() => {
+  mainModalDom.style.display = "none";
+  initGame();
+  updateDocument();
+  document.onkeyup = hangman;
+});
+
+// document.querySelector('#secret-word').innerHTML = createPanel("hangman".split(""));
+// document.querySelector('#score').innerHTML=0;
+// document.querySelector('#life').innerHTML=12;
+// document.getElementById("modal-text").innerText = "Welcome to Hangman";
+// document.getElementById("modal-button").innerText = "Start";
+// document.getElementById("main-modal").style.display = "block";
+
+function hangman(event) {
+  const key = event.key.toLowerCase();
+
+  if (key.length !== 1) {
+      return;
+  }
+
+  const isLetter = (key >= "a" && key <= "z");
+  const isNumber = (key >= "0" && key <= "9");
+  if (isLetter || isNumber) {
+
+    if ( isMatch(wordToGuess, key) ) {
+      if ( saveCorrectGuess(wordToGuess, key, blankWord) > 0 ) {
+        correctSoundDom.currentTime = .5;
+        correctSoundDom.play();
+      }
+    } else {
+      if (saveWrongGuess(key,usedLetters)) {
+        wrongSoundDom.currentTime = .5;
+        wrongSoundDom.play();
+      }
+      remainingLife = life -  usedLetters.length;
+    }
+
+    if (isGuessRight(blankWord, wildcard)) {
+      win++;
+      document.onkeyup = null;
+      showMainModal("You got it", "Continue");
+      //document.getElementById("main-modal").style.display = "block";
+    }
+
+    updateDocument();
+    
+    if (remainingLife == 0) { // end of game
+      document.onkeyup = null;
+      showMainModal("Sorry ... try again", "Continue");
+      // document.getElementById("main-modal").style.display = "block";
+    }
+  }
+
+  console.log(key);
+}
+
+
+/*
+purpose: initialize global variables use in the the game
+*/
+function initGame() {
+  wordToGuess = "tommorow";
+  blankWord = createPlaceholder(wordToGuess, wildcard);
+  usedLetters = [];
+  remainingLife = life;
+}
+
 /*
 purpose: create an array of wildcard character representing each letter of the word
 params
@@ -7,7 +101,8 @@ returns: an array of wildcard character with the same length as the word to gues
 */
 function createPlaceholder( word, wildChar ) {
   const blankWord = [];
-  for (let i=0; i < word.length; i++) {
+  const length = word.length;
+  for (let i=0; i < length; i++) {
     blankWord.push(wildChar);
   }
   return blankWord;
@@ -18,11 +113,7 @@ purpose: check if there is a match between the word and user input
 returns: a boolean, true if there was a match
 */
 function isMatch( word, userInput ) {
-  let match = false;
-  if ( word.indexOf(userInput) > -1 ) {
-    match = true;
-  }
-  return match;
+  return ( word.indexOf(userInput) > -1 );
 }
 
 /*
@@ -33,10 +124,11 @@ params
   coorectGuess - an array holding the wildcard and letters already guessed (pass by reference)
 returns: a number indicating the number of times the letter was push into the correctGuess array
 */
-function saveCorrectGuess(word, userInput, correctGuess) {
+function saveCorrectGuess( word, userInput, correctGuess ) {
   let save = 0;
   if ( correctGuess.indexOf( userInput ) == -1) { // make sure it is not guessed yet
-    for (let i=0; i < word.length; i++) {
+    const length=word.length;
+    for (let i=0; i < length; i++) {
       if (word[i] === userInput) {
         correctGuess[i] = userInput;
         save++;
@@ -73,138 +165,30 @@ function isGuessRight (correctGuess, wildChar) {
   return (correctGuess.indexOf(wildChar) == -1);
 }
 
-/*
-params
-  word - word to guess
-  userInput - a char that the user guessed
-  placeHolder - an array holding the wildchar and letters already guessed (pass by reference)
-returns 
-  true if there at least one match
-*/
-function checkMatch( word, userInput, placeHolder) {
-  var match = false;
-
-  if ( placeHolder.indexOf( userInput ) == -1 ) {  // check if already guess letter
-    for (i=0; i < word.length; i++) {
-      if (word[i] === userInput) {
-        placeHolder[i] = userInput;
-        match=true;
-      }
-    }
-  } else {
-    match = true;
-  }
-
-  return match;
-}
-
-
-
-
-function dispPlaceHolder( placeHolder ) {
+function createPanel( placeHolder ) {
   let str = "";
-  for (let i=0; i < placeHolder.length; i++) {
+  const length = placeHolder.length;
+  for (let i=0; i < length; i++) {
     str += `<span class="panel">${placeHolder[i]}</span>`;
   }
   return str;
 }
 
-/*
-purpose: initialize global variables use in the the game
-*/
-function initGame() {
-  wordToGuess = "tommorow";
-  blankWord = createPlaceholder("tomorrow", wildcard);
-  usedLetters = [];
-  remainingLife = life = 12;
-}
 
 function updateDocument() {
-  document.querySelector('#score').innerHTML=win;
-  document.querySelector('#secret-word').innerHTML=dispPlaceHolder(blankWord);
-  document.querySelector('#life').innerHTML=remainingLife;
-  document.querySelector('#wrongletters').innerHTML=dispPlaceHolder(usedLetters);  
+  secretWordDom.innerHTML=createPanel(blankWord);
+  scoreDom.innerText=win;
+  lifeDom.innerText=remainingLife;
+  wrongLettersDom.innerHTML=createPanel(usedLetters);  
 }
 
-const correctSound = document.getElementById('correct');
-const wrongSound = document.getElementById('wrong');
-var win=0;
-const wildcard = "#";
-var wordToGuess;
-var blankWord;
-var usedLetters;
-var life;
-var remainingLife;
 
-document.querySelector('#secret-word').innerHTML = dispPlaceHolder("hangman".split(""));
-document.querySelector('#score').innerHTML=0;
-document.querySelector('#life').innerHTML=12;
-document.getElementById("modal-text").innerText = "Welcome to Hangman";
-document.getElementById("modal-button").innerText = "Start";
-document.getElementById("main-modal").style.display = "block";
-//initGame();
-//updateDocument();
-
-function test(event) {
-  const key = event.key.toLowerCase();
-
-  if (key.length !== 1) {
-      return;
-  }
-
-  const isLetter = (key >= "a" && key <= "z");
-  const isNumber = (key >= "0" && key <= "9");
-  if (isLetter || isNumber) {
-
-    if ( isMatch(wordToGuess, key) ) {
-      if ( saveCorrectGuess(wordToGuess, key, blankWord) > 0 ) {
-        correctSound.currentTime = .5;
-        correctSound.play();
-      }
-    } else {
-      if (saveWrongGuess(key,usedLetters)) {
-        wrongSound.currentTime = .5;
-        wrongSound.play();
-      }
-      remainingLife = life -  usedLetters.length;
-    }
-
-    updateDocument();
-
-    // if ( ! checkMatch(wordToGuess, key, blankWord) ) {
-    //   logWrongGuess( usedLetters, key);
-    //   remainglife = life -  usedLetters.length;
-    // } else {
-    //   if (isGuessRight(blankWord, "#")) {
-    //     win++;
-    //   }
-    // }
-    if (isGuessRight(blankWord, wildcard)) {
-      win++;
-      document.onkeyup = null;
-      document.getElementById("main-modal").style.display = "block";
-      // initGame();
-    }
-    if (remainingLife == 0) { // end of game
-
-      document.onkeyup = null;
-      document.getElementById("main-modal").style.display = "block";
-
-      // document.getElementById("end").style.display="block";
-      // initGame();
-    }
-  }
-
-  console.log(key);
+function showMainModal(msgText, btnText) {
+  modalMsgDom.innerText = msgText;
+  modalBtnDom.innerText = btnText;
+  mainModalDom.style.display = "block";
 }
 
-// document.onkeyup = test;
-document.getElementById("modal-button").onclick = (() => {
-  document.getElementById("main-modal").style.display = "none";
-  initGame();
-  updateDocument();
-  document.onkeyup = test;
-});
 
 // var guesses = "taoimeruw";
 // for (y=0; y < guesses.length; y++) {
