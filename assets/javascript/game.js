@@ -104,7 +104,7 @@ function checkMatch( word, userInput, placeHolder) {
 function dispPlaceHolder( placeHolder ) {
   let str = "";
   for (let i=0; i < placeHolder.length; i++) {
-    str += `<span>${placeHolder[i]}</span>`;
+    str += `<span class="panel">${placeHolder[i]}</span>`;
   }
   return str;
 }
@@ -136,6 +136,12 @@ var usedLetters;
 var life;
 var remainingLife;
 
+document.querySelector('#secret-word').innerHTML = dispPlaceHolder("hangman".split(""));
+document.querySelector('#score').innerHTML=0;
+document.querySelector('#life').innerHTML=12;
+document.getElementById("modal-text").innerText = "Welcome to Hangman";
+document.getElementById("modal-button").innerText = "Start";
+document.getElementById("main-modal").style.display = "block";
 //initGame();
 //updateDocument();
 
@@ -161,12 +167,9 @@ function test(event) {
         wrongSound.play();
       }
       remainingLife = life -  usedLetters.length;
-      if (remainingLife == 0) { // end of game
-        document.onkeyup = null;
-        document.getElementById("end").style.display="block";
-        // initGame();
-      }
     }
+
+    updateDocument();
 
     // if ( ! checkMatch(wordToGuess, key, blankWord) ) {
     //   logWrongGuess( usedLetters, key);
@@ -178,24 +181,29 @@ function test(event) {
     // }
     if (isGuessRight(blankWord, wildcard)) {
       win++;
-      initGame();
+      document.onkeyup = null;
+      document.getElementById("main-modal").style.display = "block";
+      // initGame();
     }
-    updateDocument();
+    if (remainingLife == 0) { // end of game
+
+      document.onkeyup = null;
+      document.getElementById("main-modal").style.display = "block";
+
+      // document.getElementById("end").style.display="block";
+      // initGame();
+    }
   }
 
   console.log(key);
 }
 
 // document.onkeyup = test;
-document.getElementById("start-button").onclick = (() => {
-  document.onkeyup = test;
+document.getElementById("modal-button").onclick = (() => {
+  document.getElementById("main-modal").style.display = "none";
   initGame();
   updateDocument();
-});
-document.getElementById("end-button").onclick = (() => {
   document.onkeyup = test;
-  initGame();
-  updateDocument();
 });
 
 // var guesses = "taoimeruw";
