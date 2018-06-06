@@ -29,17 +29,59 @@
     <!-- end The Modal -->
     
 
-    <div>
-      <div id="score-box">
-        <h2 id="score-text">SCORE</h2><!--
-        --><div id="score"></div>
+   
+    <div id="main">
+      <div id="scoreboard">
+        <div id="score-box">
+          <h2 id="score-text">SCORE</h2><!--
+          --><div id="score"></div>
+        </div>
+        <div id="life-box">
+          <h2 id="life-text">LIFE</h2><!--
+          --><div id="life"></div>    
+        </div>
       </div>
-    </div>
-    <div>
-      <div id="life-box">
-        <h2 id="life-text">LIFE</h2><!--
-        --><div id="life"></div>    
+  
+      <div id="hangmandiv">
+        <svg id="hangmansvg" width="400" height="400">
+
+          <g id="hang" stroke="black" stroke-width="5">
+            <g id="life1" display="none">
+              <polyline points="10,300 350,300" />
+            </g>
+            <g id="life10" display="none">
+              <polyline points="60,300 60,10" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line3" points="60,10 210,10" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line4" points="60,60 110,10" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line5" points="210,10 210,70" />
+            </g>
+            <g id="life10" display="none">
+              <circle id="hangman6" cx="210" cy="90" r="20" fill="none" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line7" points="210,110 210,190" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line8" points="210,150 250,130" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line9" points="210,150 170,130" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line10" points="210,190 240,240" />
+            </g>
+            <g id="life10" display="none">
+              <polyline id="line11" points="210,190 180,240" />
+            </g>
+        </svg>
       </div>
+
     </div>
    
     <!-- <h2>Wrong Letters</h2> -->

@@ -13,6 +13,19 @@
   padding-top: 1rem;
 }
 
+#scoreboard {
+  width: 40%;
+  float: left;
+}
+#hangmandiv {
+  float: left;
+}
+#main::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
 .panel {
   display: inline-block;
   width: 4rem;
@@ -113,3 +126,4 @@
   display: inline-block;
   margin-bottom: 1rem;
 }
+

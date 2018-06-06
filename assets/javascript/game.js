@@ -1,4 +1,4 @@
-const life=12; /* number of guess each round */
+const life=11; /* number of guess each round */
 const wildcard = "#"; /* wildcard char use */
 
 let win=0;
@@ -18,6 +18,7 @@ let modalMsgDom = document.getElementById("modal-text");
 let modalBtnDom = document.getElementById("modal-button");
 let mainModalDom = document.getElementById("main-modal");
 
+const linesSVG = document.querySelectorAll("g g");
 
 secretWordDom.innerHTML = createPanel("hangman".split(""));
 scoreDom.innerText = win;
@@ -30,13 +31,6 @@ modalBtnDom.onclick = (() => {
   updateDocument();
   document.onkeyup = hangman;
 });
-
-// document.querySelector('#secret-word').innerHTML = createPanel("hangman".split(""));
-// document.querySelector('#score').innerHTML=0;
-// document.querySelector('#life').innerHTML=12;
-// document.getElementById("modal-text").innerText = "Welcome to Hangman";
-// document.getElementById("modal-button").innerText = "Start";
-// document.getElementById("main-modal").style.display = "block";
 
 function hangman(event) {
   const key = event.key.toLowerCase();
@@ -60,6 +54,7 @@ function hangman(event) {
         wrongSoundDom.play();
       }
       remainingLife = life - usedLetters.length;
+      linesSVG[usedLetters.length-1].setAttribute("display", "block");
     }
 
     if (isGuessRight(blankWord, wildcard)) {
@@ -88,6 +83,10 @@ function initGame() {
   blankWord = createPlaceholder(wordToGuess, wildcard);
   usedLetters = [];
   remainingLife = life;
+  const lines = linesSVG.length;
+  for(let i=0; i<lines; i++) {
+    linesSVG[i].setAttribute("display", "none");
+  }
 }
 
 /*
