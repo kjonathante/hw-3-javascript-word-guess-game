@@ -87,7 +87,7 @@ function hangman(event) {
 purpose: initialize global variables use in the the game
 */
 function initGame() {
-  wordToGuess = "dolphin";
+  wordToGuess = "turtle";
   blankWord = createPlaceholder(wordToGuess, wildcard);
   usedLetters = [];
   remainingLife = life;
