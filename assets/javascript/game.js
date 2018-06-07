@@ -11,15 +11,16 @@ let remainingLife; /* number of guess remaining */
 /* DOM Elements */
 const correctSoundDom = document.getElementById('correct');
 const wrongSoundDom = document.getElementById('wrong');
-let secretWordDom = document.getElementById("secret-word");
-let wrongLettersDom = document.getElementById("wrongletters");
-let scoreDom = document.getElementById("score");
-let lifeDom = document.getElementById("life");
-let modalMsgDom = document.getElementById("modal-text");
-let modalBtnDom = document.getElementById("modal-button");
-let mainModalDom = document.getElementById("main-modal");
-
+const secretWordDom = document.getElementById("secret-word");
+const wrongLettersDom = document.getElementById("wrongletters");
+const scoreDom = document.getElementById("score");
+const lifeDom = document.getElementById("life");
+const modalMsgDom = document.getElementById("modal-text");
+const modalBtnDom = document.getElementById("modal-button");
+const mainModalDom = document.getElementById("main-modal");
 const linesSVG = document.querySelectorAll("g g");
+const hangmanSVG =   document.getElementById("hangmansvg");
+const divVideo = document.getElementById('divVideo');
 
 secretWordDom.innerHTML = createPanel("hangman".split(""));
 scoreDom.innerText = win;
@@ -32,6 +33,11 @@ modalBtnDom.onclick = (() => {
   updateDocument();
   document.onkeyup = hangman;
 });
+
+video.onended = (() => { 
+  showMainModal("You got it.", "Continue");
+});
+
 
 function hangman(event) {
   const key = event.key.toLowerCase();
@@ -62,7 +68,7 @@ function hangman(event) {
       win++;
       document.onkeyup = null;
       showVideo();
-      showMainModal("You got it.", "Continue");
+      //showMainModal("You got it.", "Continue");
     }
 
     updateDocument();
@@ -89,6 +95,8 @@ function initGame() {
   for(let i=0; i<lines; i++) {
     linesSVG[i].setAttribute("display", "none");
   }
+  hangmanSVG.style.display = "inline-block";
+  divVideo.style.display = "none";
 }
 
 /*
@@ -190,8 +198,8 @@ function showMainModal(msgText, btnText) {
 
 function showVideo()
 {
-  document.getElementById("hangmansvg").style.display="none";
-  document.getElementById("divVideo").style.display="block";
+  hangmanSVG.style.display="none";
+  divVideo.style.display="block";
   const video = document.getElementById('video');
   const mp4 = document.getElementById('mp4');
 
@@ -199,7 +207,7 @@ function showVideo()
   mp4.src = videoPath + wordToGuess +".webm";
 
   video.load();
-  // video.play();
+  video.play();
 }
 // var guesses = "taoimeruw";
 // for (y=0; y < guesses.length; y++) {
