@@ -23,7 +23,7 @@
       <!-- Modal content -->
       <div class="modal-content">
         <h1 id="modal-text">Modal Message</h1>
-        <span class="button" id="modal-button">Button Text</span>
+        <span id="modal-button">Button Text</span>
       </div>
     </div>
     <!-- end The Modal -->
@@ -43,8 +43,12 @@
       </div>
   
       <div id="hangmandiv">
-        <svg id="hangmansvg" width="400" height="400">
-
+        <div id="divVideo">
+            <video id="video" autostart="false">
+                <source id="mp4"/>
+            </video>
+        </div>
+        <svg id="hangmansvg" width="360" height="310">
           <g id="hang" stroke="black" stroke-width="5">
             <g id="life1" display="none">
               <polyline points="10,300 350,300" />
@@ -79,6 +83,7 @@
             <g id="life10" display="none">
               <polyline id="line11" points="210,190 180,240" />
             </g>
+          </g>
         </svg>
       </div>
 
@@ -86,7 +91,7 @@
    
     <!-- <h2>Wrong Letters</h2> -->
     <div id="wrongletters"></div>
-  </div>
+</div>
   
   <script src="assets/javascript/game.js"></script>
 </body>

@@ -1,5 +1,6 @@
 const life=11; /* number of guess each round */
 const wildcard = "#"; /* wildcard char use */
+const videoPath = "assets/videos/";
 
 let win=0;
 let wordToGuess; /* a string, the secret word */
@@ -60,6 +61,7 @@ function hangman(event) {
     if (isGuessRight(blankWord, wildcard)) {
       win++;
       document.onkeyup = null;
+      showVideo();
       showMainModal("You got it.", "Continue");
     }
 
@@ -79,7 +81,7 @@ function hangman(event) {
 purpose: initialize global variables use in the the game
 */
 function initGame() {
-  wordToGuess = "tommorow";
+  wordToGuess = "dolphin";
   blankWord = createPlaceholder(wordToGuess, wildcard);
   usedLetters = [];
   remainingLife = life;
@@ -186,7 +188,19 @@ function showMainModal(msgText, btnText) {
   mainModalDom.style.display = "block";
 }
 
+function showVideo()
+{
+  document.getElementById("hangmansvg").style.display="none";
+  document.getElementById("divVideo").style.display="block";
+  const video = document.getElementById('video');
+  const mp4 = document.getElementById('mp4');
 
+  video.height = "310";
+  mp4.src = videoPath + wordToGuess +".webm";
+
+  video.load();
+  // video.play();
+}
 // var guesses = "taoimeruw";
 // for (y=0; y < guesses.length; y++) {
 //   var inputLetter = guesses[y];

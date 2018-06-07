@@ -10,21 +10,30 @@
   max-width: 960px;
   width: 100%;
   margin: 0 auto;
-  padding-top: 1rem;
+  padding-top: 3rem;
 }
 
+#main {
+  margin-bottom: 2rem;
+}
 #scoreboard {
   width: 40%;
   float: left;
 }
+
 #hangmandiv {
+  width: 60%;
   float: left;
+  text-align: center;
+  background-color: red;
+  border-radius: 5px;
 }
 #main::after {
   content: "";
   clear: both;
   display: table;
 }
+
 
 .panel {
   display: inline-block;
@@ -49,14 +58,11 @@
 
 #score-box,
 #life-box {
-  /* width: 20rem; */
-  /* height: 6rem; */
-  /* border: 2px solid black; */
   border-radius: 5px;
   background-color: coral;
   padding: .5rem;
   display: inline-block;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 #score-text, 
@@ -77,7 +83,8 @@
   text-align: left;
 }
 
-#score, #life {
+#score,
+#life {
   width: 6rem;
   margin-left: .5rem;
   text-align: right;
@@ -108,8 +115,8 @@
   text-align: center;
 }
 
-.button:hover,
-.button:focus {
+#modal-button:hover,
+#modal-button:focus {
     cursor: pointer;
 }
 
@@ -121,9 +128,11 @@
 #modal-button {
   background-color: cornflowerblue;
   padding: 1rem 4rem;
-  /* border: 1px solid black; */
   border-radius: 2px;
   display: inline-block;
   margin-bottom: 1rem;
 }
 
+#divVideo {
+  display:  none;
+}
