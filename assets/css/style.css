@@ -6,11 +6,23 @@
           box-sizing: border-box;
 }
 
+body {
+  background: repeating-linear-gradient(
+  to right,
+  #b4e7fa,
+  #b4e7fa 30px,
+  #d9f2fd 20px,
+  #d9f2fd 50px
+  );
+}
+
+
+
 .container {
   max-width: 960px;
   width: 100%;
   margin: 0 auto;
-  padding-top: 3rem;
+  padding-top: 2.5rem;
 }
 
 #main {
