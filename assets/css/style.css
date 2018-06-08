@@ -37,10 +37,10 @@ body {
   width: 60%;
   float: left;
   text-align: center;
-  background-color: darkolivegreen;
+  background-color: #3E8725;
   border-radius: 5px;
-  border: 5px solid black;
-  padding: 3px;
+  border: 5px solid #DA7A2D;
+  padding: 6px 3px 3px 3px;
 }
 #main::after {
   content: "";
@@ -54,9 +54,9 @@ body {
   width: 4rem;
   height: 6rem;
   margin: 0 .5rem;
-  background-color: aqua;
+  background-color: #FEEF50;
   border-radius: 5%;
-  border: 2px solid black;
+  border: 5px solid #F1CC56;
   font-size: 4rem;
   line-height: 6rem;
   text-align: center;
@@ -109,14 +109,14 @@ body {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 150px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.1); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.01); /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -124,7 +124,7 @@ body {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 5px solid #327FBA;
   width: 40%;
   text-align: center;
 }
@@ -145,6 +145,7 @@ body {
   border-radius: 2px;
   display: inline-block;
   margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
 #divVideo {
