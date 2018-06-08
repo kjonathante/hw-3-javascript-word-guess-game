@@ -1,3 +1,4 @@
+'use strict';
 const life=11; /* number of guess each round */
 const wildcard = "#"; /* wildcard char use */
 const videoPath = "assets/videos/";
@@ -19,8 +20,9 @@ const modalMsgDom = document.getElementById("modal-text");
 const modalBtnDom = document.getElementById("modal-button");
 const mainModalDom = document.getElementById("main-modal");
 const linesSVG = document.querySelectorAll("g g");
-const hangmanSVG =   document.getElementById("hangmansvg");
+const hangmanSVG = document.getElementById("hangmansvg");
 const divVideo = document.getElementById('divVideo');
+const videoDom = document.getElementById('video');
 
 secretWordDom.innerHTML = createPanel("hangman".split(""));
 scoreDom.innerText = win;
@@ -34,7 +36,7 @@ modalBtnDom.onclick = (() => {
   document.onkeyup = hangman;
 });
 
-video.onended = (() => { 
+videoDom.onended = (() => { 
   showMainModal("You got it.", "Continue");
 });
 
@@ -215,14 +217,13 @@ function showVideo()
 {
   hangmanSVG.style.display="none";
   divVideo.style.display="block";
-  const video = document.getElementById('video');
   const mp4 = document.getElementById('mp4');
 
-  video.height = "310";
+  videoDom.height = "310";
   mp4.src = videoPath + wordToGuess +".webm";
 
-  video.load();
-  video.play();
+  videoDom.load();
+  videoDom.play();
 }
 // var guesses = "taoimeruw";
 // for (y=0; y < guesses.length; y++) {
