@@ -59,9 +59,24 @@ function hangman(event) {
       if (saveWrongGuess(key,usedLetters)) {
         wrongSoundDom.currentTime = .5;
         wrongSoundDom.play();
+        remainingLife = life - usedLetters.length;
+
+        let path = linesSVG[usedLetters.length-1];
+
+        path.setAttribute("display", "block");
+        // Clear any previous transition
+        path.style.transition = 'none';
+        // Set up the starting positions
+        path.style.strokeDasharray = 400 + ' ' + 400;
+        path.style.strokeDashoffset = 400;
+        // Trigger a layout so styles are calculated & the browser
+        // picks up the starting position before animating
+        path.getBoundingClientRect();
+        // Define our transition
+        path.style.transition = 'stroke-dashoffset 2s ease-in-out';
+        // Go!
+        path.style.strokeDashoffset = '0';
       }
-      remainingLife = life - usedLetters.length;
-      linesSVG[usedLetters.length-1].setAttribute("display", "block");
     }
 
     if (isGuessRight(blankWord, wildcard)) {
