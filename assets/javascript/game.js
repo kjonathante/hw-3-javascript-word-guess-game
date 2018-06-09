@@ -1,4 +1,5 @@
 'use strict';
+const secretWordList = ['deer', 'dolphin', 'elephant', 'lion', 'penguin', 'turtle'];
 const life=11; /* number of guess each round */
 const wildcard = "#"; /* wildcard char use */
 const videoPath = "assets/videos/";
@@ -96,7 +97,7 @@ function hangman(event) {
     }
   }
 
-  console.log(key);
+  //console.log(key);
 }
 
 
@@ -104,7 +105,8 @@ function hangman(event) {
 purpose: initialize global variables use in the the game
 */
 function initGame() {
-  wordToGuess = "turtle";
+  wordToGuess = secretWordList[Math.floor(Math.random()*secretWordList.length)];
+  console.log(wordToGuess);
   blankWord = createPlaceholder(wordToGuess, wildcard);
   usedLetters = [];
   remainingLife = life;
